@@ -274,7 +274,7 @@ app.get("/admin/dashboard",function(req,res){
     res.locals.admin = req.session.admin
     res.render("admin/dash")
   } else {
-    res.redirect("/admin")
+    res.redirect("/")
   }
   
 })
@@ -290,7 +290,7 @@ app.get("/admin/orders",function(req,res){
       }
     });
   } else {
-    res.redirect("/admin")
+    res.redirect("/")
   }
 })
 //view completed sales
@@ -305,7 +305,7 @@ app.get("/admin/sales",function(req,res){
       }
     });
   } else {
-    res.redirect("/admin")
+    res.redirect("/")
   }
 })
 
@@ -333,7 +333,23 @@ app.get("/admin/manage", function(req,res){
       })
     });
   } else {
-    res.redirect("/admin")
+    res.redirect("/")
+  }
+
+})
+
+app.get("/admin/types/manage", function(req,res){
+
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query('SELECT * from types', function (error, results, fields) {
+      if (error) throw error;
+      res.render('admin/types/manage', {
+        types: results
+      })
+    });
+  } else {
+    res.redirect("/")
   }
 
 })
@@ -352,7 +368,7 @@ app.get("/admin/new", function(req, res) {
     res.locals.admin = req.session.admin
     res.render("admin/new")
   } else {
-    res.redirect("/admin")
+    res.redirect("/")
   }
 })
 
@@ -395,7 +411,7 @@ app.get("/admin/edit/:id", function(req, res) {
       })
     });
   } else {
-    res.redirect("/admin")
+    res.redirect("/")
   }
 })
 //add new Product for admin not safe!!!
