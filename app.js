@@ -309,6 +309,18 @@ app.get("/admin/sales",function(req,res){
   }
 })
 
+app.get('/admin/types/new', (req,res) => {
+  res.render('admin/types/new')
+})
+
+app.post('/admin/types/save', (req, res) => {
+  let data =  req.body
+  connection.query(`INSERT into types(name) values('${data.name}')`, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect('/admin/manage')
+  });
+})
+
 //view all the products 
 app.get("/admin/manage", function(req,res){
 
@@ -356,8 +368,7 @@ app.post('/admin/new', function(req, res) {
 
   let imgUrl = '/static/uploads/'+imgUnique+'.jpg';
 
-  let data =  req.body
-
+  
   // Use the mv() method to move to a place in server
   imgFile.mv(__dirname + imgUrl, function(err) {
     if (err)
@@ -365,6 +376,7 @@ app.post('/admin/new', function(req, res) {
 
     // res.send('File uploaded!');
 
+    let data =  req.body
     connection.query(`INSERT into products(name,descr,price,stock,picture) values('${data.name}','${data.descr}','${data.price}', '${data.stock}','${imgUnique}.jpg')`, function (error, results, fields) {
       if (error) throw error;
       res.redirect('/admin/manage')
