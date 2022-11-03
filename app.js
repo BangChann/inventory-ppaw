@@ -309,6 +309,7 @@ app.get("/admin/sales",function(req,res){
   }
 })
 
+//add new for types
 app.get('/admin/types/new', (req,res) => {
   res.render('admin/types/new')
 })
@@ -317,7 +318,20 @@ app.post('/admin/types/save', (req, res) => {
   let data =  req.body
   connection.query(`INSERT into types(name) values('${data.name}')`, function (error, results, fields) {
     if (error) throw error;
-    res.redirect('/admin/manage')
+    res.redirect('/admin/types/manage')
+  });
+})
+
+//add new for category
+app.get('/admin/category/new', (req,res) => {
+  res.render('admin/category/new')
+})
+
+app.post('/admin/category/save', (req, res) => {
+  let data =  req.body
+  connection.query(`INSERT into category(name) values('${data.name}')`, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect('/admin/category/manage')
   });
 })
 
@@ -337,7 +351,7 @@ app.get("/admin/manage", function(req,res){
   }
 
 })
-
+//view all the type
 app.get("/admin/types/manage", function(req,res){
 
   if(req.session.admin) {
@@ -345,6 +359,22 @@ app.get("/admin/types/manage", function(req,res){
     connection.query('SELECT * from types', function (error, results, fields) {
       if (error) throw error;
       res.render('admin/types/manage', {
+        types: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+
+})
+//view all the category
+app.get("/admin/category/manage", function(req,res){
+
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query('SELECT * from category', function (error, results, fields) {
+      if (error) throw error;
+      res.render('admin/category/manage', {
         types: results
       })
     });
