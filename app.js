@@ -150,6 +150,37 @@ app.get("/admin/types/manage", function(req,res){
   }
 })
 
+// CATEGORIES MODULES
+// Render the form
+app.get('/admin/categories/new', (req,res) => {
+  res.render('admin/categories/new')
+})
+
+// Save the form
+app.post('/admin/categories/save', (req, res) => {
+  let data =  req.body
+  connection.query(`INSERT into categories(name) values('${data.name}')`, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect('/admin/categories/manage')
+  });
+})
+
+//view all the categories
+app.get("/admin/categories/manage", function(req,res){
+
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query('SELECT * from categories', function (error, results, fields) {
+      if (error) throw error;
+      res.render('admin/categories/manage', {
+        types: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+
+})
 
 // TUTORIAL ROUTES
 // app.get("/admin/manage", function(req,res){
