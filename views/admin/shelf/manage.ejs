@@ -1,0 +1,35 @@
+<%- include('../partials/head',{page: "shelf-manage"}) %>
+
+<h2 class="title is-2">All Products</h2>
+<div id="app">
+<table class="table is-striped is-fullwidth" >
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+    <% shelf.forEach((item,index)=> { %>
+
+          <tr>
+              <td><%-item.id %></td>
+              <td><%-item.shelf_name %></td>
+              <td><%-item.location %></td>
+              <td><%-item.description %></td>
+              <td>
+                <a href="<%-baseUrl %>/admin/edit/<%-item.id %>" class="button">Edit</a>
+              </td>
+          </tr>
+    <% }) %>
+</tbody>
+</table>
+</div>
+<script src="<%-baseUrl %>/js/vue.js"></script>
+<script src="<%-baseUrl %>/js/sweetalert2.all.min.js"></script>
+<script>
+</script>
+<%- include('../partials/foot') %>

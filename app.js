@@ -335,6 +335,19 @@ app.post('/admin/category/save', (req, res) => {
   });
 })
 
+//add new for shelf
+app.get('/admin/shelf/new', (req,res) => {
+  res.render('admin/shelf/new')
+})
+
+app.post('/admin/shelf/save', (req, res) => {
+  let data =  req.body
+  connection.query(`INSERT into shelf(shelf_name,location,description) values('${data.name}','${data.loc}','${data.descr}')`, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect('/admin/shelf/manage')
+  });
+})
+
 //view all the products 
 app.get("/admin/manage", function(req,res){
 
@@ -376,6 +389,23 @@ app.get("/admin/category/manage", function(req,res){
       if (error) throw error;
       res.render('admin/category/manage', {
         types: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+
+})
+
+//view all the shelf
+app.get("/admin/shelf/manage", function(req,res){
+
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query('SELECT * from shelf', function (error, results, fields) {
+      if (error) throw error;
+      res.render('admin/shelf/manage', {
+        shelf: results
       })
     });
   } else {
