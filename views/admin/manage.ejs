@@ -8,7 +8,7 @@
             <th>id</th>
             <th>Picture</th>
             <th>Name</th>
-            <th>Stock</th>
+            <!-- <th>Stock</th> -->
             <th>Edit</th>
           </tr>
         </thead>
@@ -23,7 +23,7 @@
                   </figure>
             </td>
               <td><%-item.name %></td>
-              <td><%-item.stock %> <button class="button" @click="editstock(<%-item.id %>,'d<%-index %>')">Edit</button></td>
+              <!-- <td><%-item.stock %> <button class="button" @click="editstock(<%-item.id %>,'d<%-index %>')">Edit</button></td> -->
               <td>
                 <a href="<%-baseUrl %>/admin/edit/<%-item.id %>" class="button">Edit product</a>
               </td>

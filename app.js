@@ -40,7 +40,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : '',
-  database : 'warehouse'
+  database : 'inventorydb'
 })
 
 connection.connect(function(err) {
@@ -55,18 +55,18 @@ connection.connect(function(err) {
 app.set('view engine', 'ejs');
 
 // homepage
-app.get('/', function (req, res) {
-  res.locals.user = req.session.user;
+// app.get('/', function (req, res) {
+//   res.locals.user = req.session.user;
 
-  connection.query('SELECT * from products', function (error, results, fields) {
-    if (error) throw error;
-    res.render('index', {
-      title : "Shop",
-      products: results
-    })
-  });
+//   connection.query('SELECT * from products', function (error, results, fields) {
+//     if (error) throw error;
+//     res.render('index', {
+//       title : "Shop",
+//       products: results
+//     })
+//   });
 
-})
+// })
 //login
 app.get('/login', function (req, res) {
   res.render('login', {title : "Login"})
@@ -227,12 +227,20 @@ app.get('/404',(req,res)=> {
   res.render('404')
 })
 
+
+
+
+
+
+
+
+
 // ****************
 //     Admin Views
 
 // ****************
 //login page
-app.get('/admin',(req,res)=> {
+app.get('/',(req,res)=> {
   res.render("admin/login", {title: "Admin Login"})
 })
 //login script
