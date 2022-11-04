@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="<%=baseUrl %>/css/adminstyle.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
       body{
@@ -35,8 +36,11 @@
                 <div id="navbarBasicExample" class="navbar-menu">
               
                   <div class="navbar-end">
-                        <a href="<%-baseUrl%>/logout" class="navbar-item">
-                                Log Out
+                        <a href="/logout" class="navbar-item button has-text-weight-semibold has-text-link" style="margin-top: 10px; margin-right: 10px;">
+                          <i class="fa-solid fa-right-from-bracket" style="margin-right: 8px;"></i>
+                          <small>
+                            Log Out
+                          </small>      
                         </a>
                   </div>
                 </div>

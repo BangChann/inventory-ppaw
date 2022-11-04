@@ -1,11 +1,11 @@
-<%- include('../partials/head',{page: "categories-manage"}) %>
+<%- include('../partials/head',{page: "shelves-manage"}) %>
 <div class="columns" style="margin-top: 24px;">
   <div class="column">
-    <h2 class="title is-2">Categories</h2>
+    <h2 class="title is-2">Shelves</h2>
   </div>
   <div class="column" style="margin-right: 10px;">
     <div class="buttons is-right">
-      <a href="/admin/categories/new" class="button is-link">Add New</a>
+      <a href="/admin/shelves/new" class="button is-link">Add New</a>
     </div>
   </div>
 </div>
@@ -15,18 +15,22 @@
       <tr>
         <th class="has-text-centered">id</th>
         <th class="has-text-centered">Name</th>
+        <th class="has-text-centered">Location</th>
+        <th class="has-text-centered">Description</th>
         <th class="has-text-centered">Action</th>
       </tr>
     </thead>
     <tbody>
-  <% categories.forEach((item,index)=> { %>
+  <% shelves.forEach((item,index)=> { %>
 
       <tr>
           <td class="has-text-centered"><%-item.id %></td>
-          <td class="has-text-centered"><%-item.name %></td>
+          <td class="has-text-centered"><%-item.shelf_name %></td>
+          <td class="has-text-centered"><%-item.location %></td>
+          <td class="has-text-centered"><%-item.description %></td>
           <td class="has-text-centered">
-            <a href="/admin/categories/edit/<%-item.id %>" class="button is-link">Edit</a>
-            <a href="/admin/categories/delete/<%-item.id %>" class="button is-danger">Delete</a>
+            <a href="/admin/shelves/edit/<%-item.id %>" class="button is-link">Edit</a>
+            <a href="/admin/shelves/delete/<%-item.id %>" class="button is-danger">Delete</a>
           </td>
       </tr>
   <% }) %>

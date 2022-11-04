@@ -120,6 +120,8 @@ app.get("/admin/dashboard",function(req,res){
   
 })
 
+
+
 // TYPES MODULES
 // Render the form
 app.get('/admin/types/new', (req,res) => {
@@ -131,52 +133,10 @@ app.post('/admin/types/save', (req, res) => {
   let data =  req.body
   connection.query(`INSERT into types(name) values('${data.name}')`, function (error, results, fields) {
     if (error) throw error;
-    res.redirect('/admin/manage')
+    res.redirect('/admin/types/manage')
   });
 })
 
-//add new for category
-app.get('/admin/category/new', (req,res) => {
-  res.render('admin/category/new')
-})
-
-app.post('/admin/category/save', (req, res) => {
-  let data =  req.body
-  connection.query(`INSERT into category(name) values('${data.name}')`, function (error, results, fields) {
-    if (error) throw error;
-    res.redirect('/admin/category/manage')
-  });
-})
-
-//add new for shelf
-app.get('/admin/shelf/new', (req,res) => {
-  res.render('admin/shelf/new')
-})
-
-app.post('/admin/shelf/save', (req, res) => {
-  let data =  req.body
-  connection.query(`INSERT into shelf(shelf_name,location,description) values('${data.name}','${data.loc}','${data.descr}')`, function (error, results, fields) {
-    if (error) throw error;
-    res.redirect('/admin/shelf/manage')
-  });
-})
-
-//view all the products 
-app.get("/admin/manage", function(req,res){
-
-  if(req.session.admin) {
-    res.locals.admin = req.session.admin
-    connection.query('SELECT * from products', function (error, results, fields) {
-      if (error) throw error;
-      res.render('admin/manage', {
-        products: results
-      })
-    });
-  } else {
-    res.redirect("/")
-  }
-
-})
 //view all the type
 app.get("/admin/types/manage", function(req,res){
   if(req.session.admin) {
@@ -192,22 +152,54 @@ app.get("/admin/types/manage", function(req,res){
   }
 })
 
-//view all the shelf
-app.get("/admin/shelf/manage", function(req,res){
-
+//view edit form
+app.get("/admin/types/edit/:id", function(req,res){
   if(req.session.admin) {
     res.locals.admin = req.session.admin
-    connection.query('SELECT * from shelf', function (error, results, fields) {
+    connection.query(`SELECT * from types WHERE id = ${req.params.id}`, function (error, results, fields) {
       if (error) throw error;
-      res.render('admin/shelf/manage', {
-        shelf: results
+      console.log(results);
+      res.render('admin/types/new', {
+        type: results
       })
     });
   } else {
     res.redirect("/")
   }
-
 })
+
+//Save updates
+app.post("/admin/types/update/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`UPDATE types SET name = '${req.body.name}' WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect('/admin/types/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Delete data
+app.get("/admin/types/delete/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`DELETE from types WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.redirect('/admin/types/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+
+
+
+
+
 
 // CATEGORIES MODULES
 // Render the form
@@ -232,7 +224,7 @@ app.get("/admin/categories/manage", function(req,res){
     connection.query('SELECT * from categories', function (error, results, fields) {
       if (error) throw error;
       res.render('admin/categories/manage', {
-        types: results
+        categories: results
       })
     });
   } else {
@@ -240,6 +232,233 @@ app.get("/admin/categories/manage", function(req,res){
   }
 
 })
+
+//View edit form
+app.get("/admin/categories/edit/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`SELECT * from categories WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.render('admin/categories/new', {
+        categories: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Save updates
+app.post("/admin/categories/update/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`UPDATE categories SET name = '${req.body.name}' WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect('/admin/categories/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Delete data
+app.get("/admin/categories/delete/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`DELETE from categories WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.redirect('/admin/categories/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+
+
+
+
+// SHELVES MODULES
+//add new for shelves
+app.get('/admin/shelves/new', (req,res) => {
+  res.render('admin/shelves/new')
+})
+
+app.post('/admin/shelves/save', (req, res) => {
+  let data =  req.body
+  connection.query(`INSERT into shelves(shelf_name,location,description) values('${data.name}','${data.location}','${data.description}')`, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect('/admin/shelves/manage')
+  });
+})
+
+//view all the shelves
+app.get("/admin/shelves/manage", function(req,res){
+
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query('SELECT * from shelves', function (error, results, fields) {
+      if (error) throw error;
+      res.render('admin/shelves/manage', {
+        shelves: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+
+})
+
+//View edit form
+app.get("/admin/shelves/edit/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`SELECT * from shelves WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.render('admin/shelves/new', {
+        shelves: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Save updates
+app.post("/admin/shelves/update/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`UPDATE shelves SET shelf_name = '${req.body.name}', location = '${req.body.location}', description = '${req.body.description}' WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect('/admin/shelves/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Delete data
+app.get("/admin/shelves/delete/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`DELETE from shelves WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.redirect('/admin/shelves/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+
+
+
+
+
+
+
+// ITEMS MODULES
+// Create new Item
+app.get('/admin/items/new', function(req,res){
+  connection.query('SELECT * from shelves', function (error, results, fields) {
+    if (error) throw error;
+    res.render('admin/items/new', {
+      shelves: results
+    })
+  });
+})
+
+// Saving item
+app.post('/admin/items/save', (req, res) => {
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field
+  let imgFile = req.files.image;
+
+  let imgUnique = uniqueString()
+
+  let imgUrl = '/static/uploads/'+imgUnique+'.jpg';
+
+  // Use the mv() method to move to a place in server
+  imgFile.mv(__dirname + imgUrl, function(err) {
+  if (err)
+    return res.status(500).send(err);
+
+  // res.send('File uploaded!');
+  })
+
+  let data =  req.body
+  connection.query(`INSERT into items(name,shelf_id,description,qty,img) values('${data.name}','${data.shelf_id}','${data.description}','${data.qty}','${imgUnique}.jpg')`, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect('/admin/items/manage')
+  });
+})
+
+// Manage Items
+app.get('/admin/items/manage', (req,res)=>{
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query('SELECT items.id, shelf_name, name, qty, img, status from items LEFT JOIN shelves ON items.shelf_id = shelves.id GROUP BY items.id', function (error, results, fields) {
+      if (error) throw error;
+      res.render('admin/items/manage', {
+        items: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }  
+})
+
+//View edit form
+app.get("/admin/items/edit/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`SELECT * from items where id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.render('admin/items/new', {
+        items: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Save updates
+app.post("/admin/items/update/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`UPDATE shelves SET shelf_name = '${req.body.name}', location = '${req.body.location}', description = '${req.body.description}' WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect('/admin/shelves/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Delete data
+app.get("/admin/items/delete/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`DELETE from items WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.redirect('/admin/items/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+
 
 // TUTORIAL ROUTES
 // app.get("/admin/manage", function(req,res){
@@ -288,7 +507,7 @@ app.get("/admin/categories/manage", function(req,res){
 //     let data =  req.body
 //     connection.query(`INSERT into products(name,descr,price,stock,picture) values('${data.name}','${data.descr}','${data.price}', '${data.stock}','${imgUnique}.jpg')`, function (error, results, fields) {
 //       if (error) throw error;
-//       res.redirect('/admin/manage')
+//       res.redirect('/admin/dashboard')
 //     });
 //   });
 // });
