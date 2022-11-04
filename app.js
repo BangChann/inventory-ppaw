@@ -361,6 +361,105 @@ app.get("/admin/shelves/delete/:id", function(req,res){
 
 
 
+// ITEMS MODULES
+// Create new Item
+app.get('/admin/items/new', function(req,res){
+  connection.query('SELECT * from shelves', function (error, results, fields) {
+    if (error) throw error;
+    res.render('admin/items/new', {
+      shelves: results
+    })
+  });
+})
+
+// Saving item
+app.post('/admin/items/save', (req, res) => {
+  if (Object.keys(req.files).length == 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field
+  let imgFile = req.files.image;
+
+  let imgUnique = uniqueString()
+
+  let imgUrl = '/static/uploads/'+imgUnique+'.jpg';
+
+  // Use the mv() method to move to a place in server
+  imgFile.mv(__dirname + imgUrl, function(err) {
+  if (err)
+    return res.status(500).send(err);
+
+  // res.send('File uploaded!');
+  })
+
+  let data =  req.body
+  connection.query(`INSERT into items(name,shelf_id,description,qty,img) values('${data.name}','${data.shelf_id}','${data.description}','${data.qty}','${imgUnique}.jpg')`, function (error, results, fields) {
+    if (error) throw error;
+    res.redirect('/admin/items/manage')
+  });
+})
+
+// Manage Items
+app.get('/admin/items/manage', (req,res)=>{
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query('SELECT items.id, shelf_name, name, qty, img, status from items LEFT JOIN shelves ON items.shelf_id = shelves.id GROUP BY items.id', function (error, results, fields) {
+      if (error) throw error;
+      res.render('admin/items/manage', {
+        items: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }  
+})
+
+//View edit form
+app.get("/admin/items/edit/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`SELECT * from items where id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.render('admin/items/new', {
+        items: results
+      })
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Save updates
+app.post("/admin/items/update/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`UPDATE shelves SET shelf_name = '${req.body.name}', location = '${req.body.location}', description = '${req.body.description}' WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect('/admin/shelves/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+//Delete data
+app.get("/admin/items/delete/:id", function(req,res){
+  if(req.session.admin) {
+    res.locals.admin = req.session.admin
+    connection.query(`DELETE from items WHERE id = ${req.params.id}`, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results);
+      res.redirect('/admin/items/manage')
+    });
+  } else {
+    res.redirect("/")
+  }
+})
+
+
+
 // TUTORIAL ROUTES
 // app.get("/admin/manage", function(req,res){
 

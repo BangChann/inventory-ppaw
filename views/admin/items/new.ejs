@@ -1,0 +1,107 @@
+<%- include('../partials/head',{page: "items-manage"}) %>
+
+<h2 class="title is-2"><% if(locals.items){ %> <%= "Edit Item" %> <% } %> <% if(!locals.items) { %> <%= "New Item" %> <% } %></h2>
+
+<form method="post" enctype="multipart/form-data" <% if(locals.items){ items.forEach((item,index)=> { %>  action="/admin/items/update/<%= item.id %>" <% })} %> <% if(!locals.items) { %>  action="/admin/items/save" <% } %>>
+    <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <% if(locals.items){ items.forEach((item,index)=> {%>
+            <input class="input" name="name" type="text" placeholder="E.g. Laptop Asus A456U" value="<%= item.name %>">
+          <% })} %>
+            
+          <% if(!locals.items) { %>
+              <input class="input" name="name" type="text" placeholder="E.g. Laptop Asus A456U">  
+          <% } %>
+          </div>
+    </div>
+    <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <% if(locals.items){ items.forEach((item,index)=> {%>
+            <input class="input" name="description" type="text" placeholder="E.g. White Series, RGBA Backlight Keyboard" value="<%= item.description %>">
+          <% })} %>
+            
+          <% if(!locals.items) { %>
+              <input class="input" name="description" type="text" placeholder="E.g. White Series, RGBA Backlight Keyboard">  
+          <% } %>
+          </div>
+    </div>
+    <div class="field">
+        <label class="label">Quantity per Unit</label>
+        <div class="control">
+          <% if(locals.items){ items.forEach((item,index)=> {%>
+            <input class="input" name="qty" type="number" placeholder="E.g. White Series, RGBA Backlight Keyboard" value="<%= item.qty %>">
+          <% })} %>
+            
+          <% if(!locals.items) { %>
+              <input class="input" name="qty" type="number" placeholder="E.g. White Series, RGBA Backlight Keyboard">  
+          <% } %>
+          </div>
+    </div>
+    <div class="field">
+        <label for="" class="label">Item Image</label>
+        <div class="file has-name is-fullwidth is-right">
+            <label class="file-label">
+                <input class="file-input" type="file" id="file" name="image">
+                <span class="file-cta">
+                <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                    Choose Item Image
+                </span>
+                </span>
+                <span class="file-name" id="filename">
+                File name
+                </span>
+            </label>
+        </div>  
+    </div>
+    <div class="field">
+        <label class="label">Stored at Shelf</label>
+        <div class="control">
+          <% if(locals.items){ items.forEach((item,index)=> {%>
+            <div class="select">
+                <select>
+                  <option>Select dropdown</option>
+                  <option>With options</option>
+                </select>
+            </div>
+          <% })} %>
+            
+          <% if(!locals.items) { %>
+            <div class="select is-fullwidth">
+                <select name="shelf_id">
+                  <option selected disabled>Choose Shelf</option>
+                  <% shelves.forEach((item, index)=>{ %>
+                    <option value="<%= item.id %>"><%= item.shelf_name %></option>
+                  <%}) %>
+                </select>
+            </div> 
+          <% } %>
+          </div>
+    </div>
+    <br>
+    <div class="field">
+        <div class="buttons is-right">
+          <a href="/admin/items/manage" class="button is-secondary">Back</a>
+          <button class="button is-link">Submit</button>
+        </div>
+    </div>
+</form>
+<script>
+    var file = document.getElementById("file");
+    file.onchange = function(){
+        if(file.files.length > 0)
+        {
+    
+          document.getElementById('filename').innerHTML = file.files[0].name;
+          console.log(file.files[0])
+    
+        }
+    }
+    </script>
+<%- include('../partials/foot') %>
+
+              
