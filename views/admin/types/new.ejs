@@ -1,34 +1,29 @@
-<%- include('../partials/head',{page: "types-new"}) %>
+<%- include('../partials/head',{page: "types-manage"}) %>
 
-<h2 class="title is-2">New</h2>
+<h2 class="title is-2"><% if(locals.type){ %> <%= "Edit Type" %> <% } %> <% if(!locals.type) { %> <%= "New Type" %> <% } %></h2>
 
-<form action="/admin/types/save" method="post" style="max-width: 500px;" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" <% if(locals.type){ type.forEach((item,index)=> { %>  action="/admin/types/update/<%= item.id %>" <% })} %> <% if(!locals.type) { %>  action="/admin/types/save" <% } %>>
     <div class="field">
         <label class="label">Name</label>
         <div class="control">
-            <input class="input" name="name" type="text" placeholder="Product Name">
-        </div>
+          <% if(locals.type){ type.forEach((item,index)=> {%>
+            <input class="input" name="name" type="text" placeholder="E.g. Electronics" value="<%= item.name %>">
+          <% })} %>
+            
+          <% if(!locals.type) { %>
+              <input class="input" name="name" type="text" placeholder="E.g. Electronics">  
+          <% } %>
+          </div>
     </div>
     
     <br>
     <div class="field">
-            <div class="control">
-              <button class="button is-link">Submit</button>
-            </div>
+        <div class="buttons is-right">
+          <a href="/admin/types/manage" class="button is-secondary">Back</a>
+          <button class="button is-link">Submit</button>
+        </div>
     </div>
 </form>
-<script>
-var file = document.getElementById("file");
-file.onchange = function(){
-    if(file.files.length > 0)
-    {
-
-      document.getElementById('filename').innerHTML = file.files[0].name;
-      console.log(file.files[0])
-
-    }
-}
-</script>
 <%- include('../partials/foot') %>
 
               

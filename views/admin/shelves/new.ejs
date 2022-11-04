@@ -1,0 +1,50 @@
+<%- include('../partials/head',{page: "shelves-manage"}) %>
+
+<h2 class="title is-2"><% if(locals.shelves){ %> <%= "Edit Shelf" %> <% } %> <% if(!locals.shelves) { %> <%= "New Shelf" %> <% } %></h2>
+
+<form method="post" enctype="multipart/form-data" <% if(locals.shelves){ shelves.forEach((item,index)=> { %>  action="/admin/shelves/update/<%= item.id %>" <% })} %> <% if(!locals.shelves) { %>  action="/admin/shelves/save" <% } %>>
+    <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <% if(locals.shelves){ shelves.forEach((item,index)=> {%>
+            <input class="input" name="name" type="text" placeholder="E.g. Shelf A-0001" value="<%= item.shelf_name %>">
+          <% })} 
+           if(!locals.shelves) { %>
+              <input class="input" name="name" type="text" placeholder="E.g. Shelf A-0001">  
+          <% } %>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Location</label>
+        <div class="control">
+          <% if(locals.shelves){ shelves.forEach((item,index)=> {%>
+            <input class="input" name="location" type="text" placeholder="E.g. Room A" value="<%= item.location %>">
+          <% })} 
+           if(!locals.shelves) { %>
+              <input class="input" name="location" type="text" placeholder="E.g. Room A">  
+          <% } %>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <% if(locals.shelves){ shelves.forEach((item,index)=> {%>
+            <input class="input" name="description" type="text" placeholder="E.g. White Series" value="<%= item.description %>">
+          <% })} 
+           if(!locals.shelves) { %>
+              <input class="input" name="description" type="text" placeholder="E.g. White Series">  
+          <% } %>
+        </div>
+    </div>
+    
+    <br>
+    <div class="field">
+        <div class="buttons is-right">
+          <a href="/admin/shelves/manage" class="button is-secondary">Back</a>
+          <button class="button is-link">Submit</button>
+        </div>
+    </div>
+</form>
+<%- include('../partials/foot') %>
+
+              

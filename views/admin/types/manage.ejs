@@ -1,31 +1,40 @@
 <%- include('../partials/head',{page: "types-manage"}) %>
-
-<h2 class="title is-2">Types</h2>
-<div id="app">
-<table class="table is-striped is-fullwidth" >
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-    <% types.forEach((item,index)=> { %>
-
-          <tr>
-              <td><%-item.id %></td>
-              <td><%-item.name %></td>
-              <td>
-                <a href="<%-baseUrl %>/admin/edit/<%-item.id %>" class="button">Edit product</a>
-              </td>
-          </tr>
-    <% }) %>
-        </tbody>
-      </table>
+<div class="columns" style="margin-top: 24px;">
+  <div class="column">
+    <h2 class="title is-2">Types</h2>
+  </div>
+  <div class="column" style="margin-right: 10px;">
+    <div class="buttons is-right">
+      <a href="/admin/types/new" class="button is-link">Add New</a>
     </div>
-      <script src="<%-baseUrl %>/js/vue.js"></script>
-      <script src="<%-baseUrl %>/js/sweetalert2.all.min.js"></script>
-      <script>
-      </script>
+  </div>
+</div>
+<div id="app">
+  <table class="table is-striped is-fullwidth" >
+    <thead>
+      <tr>
+        <th class="has-text-centered">id</th>
+        <th class="has-text-centered">Name</th>
+        <th class="has-text-centered">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+  <% types.forEach((item,index)=> { %>
+
+      <tr>
+          <td class="has-text-centered"><%-item.id %></td>
+          <td class="has-text-centered"><%-item.name %></td>
+          <td class="has-text-centered">
+            <a href="/admin/types/edit/<%-item.id %>" class="button is-link">Edit</a>
+            <a href="/admin/types/delete/<%-item.id %>" class="button is-danger">Delete</a>
+          </td>
+      </tr>
+  <% }) %>
+    </tbody>
+  </table>
+</div>
+<script src="/js/vue.js"></script>
+<script src="/js/sweetalert2.all.min.js"></script>
+<script>
+</script>
 <%- include('../partials/foot') %>
